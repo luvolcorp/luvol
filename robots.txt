@@ -1,0 +1,7 @@
+User-agent: Googlebot
+Disallow:
+
+Sitemap: https://luvol.co.kr/sitemap.xml
+
+User-agent: *
+Disallow: /
