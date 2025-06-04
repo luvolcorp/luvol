@@ -17,6 +17,14 @@
       padding: 1rem 2rem;
       text-align: center;
     }
+    .logo {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .logo img {
+      max-width: 200px;
+      height: auto;
+    }
     main {
       max-width: 600px;
       margin: 2rem auto;
@@ -64,10 +72,13 @@
 </head>
 <body>
   <header>
-    <h1>LUVOL 제품 A/S 접수</h1>
+    
+		  <div class="logo">
+    <img src="https://luvol.speedgabia.com/kr/BI/black-point_512x512.jpg" alt="LUVOL 로고">
+  </div>
   </header>
   <main>
-    <!-- <h2>접수 폼</h2> -->
+    <h1>LUVOL 제품 A/S 접수</h1>
     <form action="https://formsubmit.co/luvol@luvol.co.kr" method="POST" enctype="multipart/form-data">
       <label for="name">이름</label>
       <input type="text" id="name" name="name" required>
