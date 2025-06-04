@@ -2,193 +2,32 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LUVOL 제품 A/S 접수</title>
-  <style>
-    body {
-      font-family: 'Noto Sans KR', sans-serif;
-      background: #f8f8f8;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #222;
-      color: #fff;
-      padding: 1rem 2rem;
-      text-align: center;
-    }
-    .logo {
-      text-align: center;
-      margin-top: 1rem;
-    }
-    .logo img {
-      max-width: 200px;
-      height: auto;
-    }
-    main {
-      max-width: 600px;
-      margin: 2rem auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    label {
-      display: block;
-      margin-top: 1rem;
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 0.75rem;
-      margin-top: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-    button {
-      margin-top: 1.5rem;
-      width: 100%;
-      padding: 1rem;
-      font-size: 1rem;
-      background: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      color: #999;
-    }
-  </style>
-<script>
-  const issueMap = {
-    '전원 문제': {
-      '전원이 안 켜짐': ['충전 중 무반응', '전원 버튼 눌러도 반응 없음'],
-      '배터리 문제': ['배터리 빨리 닳음', '배터리 충전 안됨'],
-      '전원 어댑터 문제': ['어댑터 손상', '전류 불안정']
-    },
-    '소리 문제': {
-      '소리가 안남': ['전체 무음', '일부 음역만 무음'],
-      '음질 불량': ['잡음 발생', '왜곡된 소리'],
-      '스피커 이상': ['한쪽만 작동', '소리 크기 불균형']
-    },
-    '블루투스 연결': {
-      '연결 불가': ['페어링 실패', '비밀번호 오류'],
-      '자주 끊김': ['간헐적 끊김', '환경에 따라 불안정'],
-      '기기 인식 실패': ['목록에 안 보임', '기기명 이상하게 표시']
-    }
-  };
-
-  function updateSubIssues() {
-    const category = document.getElementById('issue-category').value;
-    const detailSelect = document.getElementById('issue-detail');
-    const subdetailSelect = document.getElementById('issue-subdetail');
-    detailSelect.innerHTML = '<option value="">2단계 선택</option>';
-    subdetailSelect.innerHTML = '<option value="">3단계 선택</option>';
-
-    if (issueMap[category]) {
-      Object.keys(issueMap[category]).forEach(function (detail) {
-        const opt = document.createElement('option');
-        opt.value = detail;
-        opt.textContent = detail;
-        detailSelect.appendChild(opt);
-      });
-    }
-  }
-
-  function updateSubDetail() {
-    const category = document.getElementById('issue-category').value;
-    const detail = document.getElementById('issue-detail').value;
-    const subdetailSelect = document.getElementById('issue-subdetail');
-    subdetailSelect.innerHTML = '<option value="">3단계 선택</option>';
-
-    if (issueMap[category] && issueMap[category][detail]) {
-      issueMap[category][detail].forEach(function (item) {
-        const opt = document.createElement('option');
-        opt.value = item;
-        opt.textContent = item;
-        subdetailSelect.appendChild(opt);
-      });
-    }
-  }
-</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LUVOL 공식 홈페이지</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <div class="logo">
-      <img src="https://luvol.speedgabia.com/kr/BI/black-point_512x512.jpg" alt="LUVOL 로고">
-    </div>
+    <h1>LUVOL</h1>
+    <nav>
+      <ul>
+        <li><a href="as.html">A/S 신청</a></li>
+      </ul>
+    </nav>
   </header>
+
   <main>
-    <h1>LUVOL 제품 A/S 접수</h1>
-    <form action="https://formsubmit.co/luvol@luvol.co.kr" method="POST" enctype="multipart/form-data">
-      <label for="name">이름</label>
-      <input type="text" id="name" name="name" required>
-
-      <label for="email">이메일</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="phone">전화번호</label>
-      <input type="tel" id="phone" name="phone">
-
-      <label for="product">제품명</label>
-<select id="product" name="product" required>
-  <option value="">제품을 선택하세요</option>
-  <option value="RS-500">RS-500</option>
-  <option value="FS-500">FS-500</option>
-  <option value="PS-400">PS-400</option>
-  <option value="PS-300">PS-300</option>
-  <option value="DR-500">DR-500</option>
-</select>
-
-      <label for="serial">시리얼 번호</label>
-      <input type="text" id="serial" name="serial">
-
-      <label for="issue-category">고장 증상 (1단계)</label>
-<select id="issue-category" name="issue_category" onchange="updateSubIssues()" required>
-  <option value="">선택하세요</option>
-  <option value="전원 문제">전원 문제</option>
-  <option value="소리 문제">소리 문제</option>
-  <option value="블루투스 연결">블루투스 연결</option>
-</select>
-
-<label for="issue-detail">고장 증상 상세 (2단계)</label>
-<select id="issue-detail" name="issue_detail" onchange="updateSubDetail()" required>
-  <option value="">먼저 1단계를 선택하세요</option>
-</select>
-
-<label for="issue-subdetail">고장 증상 구체적 내용 (3단계)</label>
-<select id="issue-subdetail" name="issue_subdetail" required>
-  <option value="">먼저 2단계를 선택하세요</option>
-</select>
-
-<!-- <label for="issue">기타 고장 증상 직접 작성</label>
-<textarea id="issue" name="issue" rows="4"></textarea> -->
-
-      <label for="issue-description">고장 증상 추가 설명 (선택)</label>
-      <textarea id="issue-description" name="issue_description" rows="4" placeholder="추가로 설명하고 싶은 내용을 작성해 주세요."></textarea>
-
-      <label for="image">사진 첨부 (선택)</label>
-      <input type="file" id="image" name="attachment">
-
-      <input type="hidden" name="_subject" value="LUVOL A/S 접수 메일">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://luvol.co.kr/thanks.html">
-
-      <button type="submit">접수하기</button>
-    </form>
+    <section class="hero">
+      <h2>디지털 악기의 새로운 기준, LUVOL</h2>
+      <p>제품에 대한 정보와 A/S를 안내합니다.</p>
+    </section>
   </main>
+
   <footer>
-    &copy; 2025 LUVOL All rights reserved.
+    <a href="https://instagram.com/luvol" target="_blank"><img src="assets/insta.png" alt="Instagram"></a>
+    <a href="https://youtube.com/luvol" target="_blank"><img src="assets/youtube.png" alt="YouTube"></a>
+    <a href="https://smartstore.naver.com/luvol" target="_blank"><img src="assets/naver.png" alt="Naver Shopping"></a>
+    <p>&copy; 2025 LUVOL All rights reserved.</p>
   </footer>
 </body>
 </html>
