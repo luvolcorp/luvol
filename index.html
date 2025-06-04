@@ -41,7 +41,7 @@
       display: block;
       margin-top: 1rem;
     }
-    input, textarea {
+    input, textarea, select {
       width: 100%;
       padding: 0.75rem;
       margin-top: 0.5rem;
@@ -69,13 +69,64 @@
       color: #999;
     }
   </style>
+<script>
+  const issueMap = {
+    '전원 문제': {
+      '전원이 안 켜짐': ['충전 중 무반응', '전원 버튼 눌러도 반응 없음'],
+      '배터리 문제': ['배터리 빨리 닳음', '배터리 충전 안됨'],
+      '전원 어댑터 문제': ['어댑터 손상', '전류 불안정']
+    },
+    '소리 문제': {
+      '소리가 안남': ['전체 무음', '일부 음역만 무음'],
+      '음질 불량': ['잡음 발생', '왜곡된 소리'],
+      '스피커 이상': ['한쪽만 작동', '소리 크기 불균형']
+    },
+    '블루투스 연결': {
+      '연결 불가': ['페어링 실패', '비밀번호 오류'],
+      '자주 끊김': ['간헐적 끊김', '환경에 따라 불안정'],
+      '기기 인식 실패': ['목록에 안 보임', '기기명 이상하게 표시']
+    }
+  };
+
+  function updateSubIssues() {
+    const category = document.getElementById('issue-category').value;
+    const detailSelect = document.getElementById('issue-detail');
+    const subdetailSelect = document.getElementById('issue-subdetail');
+    detailSelect.innerHTML = '<option value="">2단계 선택</option>';
+    subdetailSelect.innerHTML = '<option value="">3단계 선택</option>';
+
+    if (issueMap[category]) {
+      Object.keys(issueMap[category]).forEach(function (detail) {
+        const opt = document.createElement('option');
+        opt.value = detail;
+        opt.textContent = detail;
+        detailSelect.appendChild(opt);
+      });
+    }
+  }
+
+  function updateSubDetail() {
+    const category = document.getElementById('issue-category').value;
+    const detail = document.getElementById('issue-detail').value;
+    const subdetailSelect = document.getElementById('issue-subdetail');
+    subdetailSelect.innerHTML = '<option value="">3단계 선택</option>';
+
+    if (issueMap[category] && issueMap[category][detail]) {
+      issueMap[category][detail].forEach(function (item) {
+        const opt = document.createElement('option');
+        opt.value = item;
+        opt.textContent = item;
+        subdetailSelect.appendChild(opt);
+      });
+    }
+  }
+</script>
 </head>
 <body>
   <header>
-    
-		  <div class="logo">
-    <img src="https://luvol.speedgabia.com/kr/BI/black-point_512x512.jpg" alt="LUVOL 로고">
-  </div>
+    <div class="logo">
+      <img src="https://luvol.speedgabia.com/kr/BI/black-point_512x512.jpg" alt="LUVOL 로고">
+    </div>
   </header>
   <main>
     <h1>LUVOL 제품 A/S 접수</h1>
@@ -95,13 +146,33 @@
       <label for="serial">시리얼 번호</label>
       <input type="text" id="serial" name="serial">
 
-      <label for="issue">고장 증상</label>
-      <textarea id="issue" name="issue" rows="4" required></textarea>
+      <label for="issue-category">고장 증상 (1단계)</label>
+<select id="issue-category" name="issue_category" onchange="updateSubIssues()" required>
+  <option value="">선택하세요</option>
+  <option value="전원 문제">전원 문제</option>
+  <option value="소리 문제">소리 문제</option>
+  <option value="블루투스 연결">블루투스 연결</option>
+</select>
+
+<label for="issue-detail">고장 증상 상세 (2단계)</label>
+<select id="issue-detail" name="issue_detail" onchange="updateSubDetail()" required>
+  <option value="">먼저 1단계를 선택하세요</option>
+</select>
+
+<label for="issue-subdetail">고장 증상 구체적 내용 (3단계)</label>
+<select id="issue-subdetail" name="issue_subdetail" required>
+  <option value="">먼저 2단계를 선택하세요</option>
+</select>
+
+<label for="issue">기타 고장 증상 직접 작성</label>
+<textarea id="issue" name="issue" rows="4"></textarea>
+
+      <label for="issue-description">고장 증상 추가 설명 (선택)</label>
+      <textarea id="issue-description" name="issue_description" rows="4" placeholder="추가로 설명하고 싶은 내용을 작성해 주세요."></textarea>
 
       <label for="image">사진 첨부 (선택)</label>
       <input type="file" id="image" name="attachment">
 
-      <!-- FormSubmit 옵션 설정 -->
       <input type="hidden" name="_subject" value="LUVOL A/S 접수 메일">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://luvol.co.kr/thanks.html">
