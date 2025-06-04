@@ -1,18 +1,105 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>"LUVOL" Let Us Vibe On Life</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUVOL 제품 A/S 접수</title>
+  <style>
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #f8f8f8;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #222;
+      color: #fff;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+    main {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #999;
+    }
+  </style>
 </head>
 <body>
-	<!-- <h1>Welcome to "LUVOL"</h1>
-	<p>Let Us Vibe On Life</p>
-	<p>이곳은 "LUVOL"의 공식 웹사이트입니다.</p>
-	<p>여러분의 방문을 환영합니다!</p>
-	<p>루볼은 여러분의 삶에 긍정적인 에너지를 불어넣기 위해 만들어졌습니다.</p>
-	<p>함께 즐거운 시간을 보내요!</p> -->
-	<img src="http://luvol.speedgabia.com/kr/BI/black-point_512x512.jpg" alt="Black Point" width="512" height="512">
-	
+  <header>
+    <h1>LUVOL 제품 A/S 접수</h1>
+  </header>
+  <main>
+    <!-- <h2>접수 폼</h2> -->
+    <form action="https://formsubmit.co/luvol@luvol.co.kr" method="POST" enctype="multipart/form-data">
+      <label for="name">이름</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">이메일</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">전화번호</label>
+      <input type="tel" id="phone" name="phone">
+
+      <label for="product">제품명</label>
+      <input type="text" id="product" name="product" required>
+
+      <label for="serial">시리얼 번호</label>
+      <input type="text" id="serial" name="serial">
+
+      <label for="issue">고장 증상</label>
+      <textarea id="issue" name="issue" rows="4" required></textarea>
+
+      <label for="image">사진 첨부 (선택)</label>
+      <input type="file" id="image" name="attachment">
+
+      <!-- FormSubmit 옵션 설정 -->
+      <input type="hidden" name="_subject" value="LUVOL A/S 접수 메일">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="https://luvol.co.kr/thanks.html">
+
+      <button type="submit">접수하기</button>
+    </form>
+  </main>
+  <footer>
+    &copy; 2025 LUVOL All rights reserved.
+  </footer>
 </body>
 </html>
