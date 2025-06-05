@@ -78,6 +78,7 @@ footer a img {
   vertical-align: middle;
 }
 
+/* 로딩 오버레이 */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -105,7 +106,7 @@ footer a img {
   height: 48px;
   margin: 0 auto 16px;
   border: 5px solid #ddd;
-  border-top: 5px solid #007bff;
+  border-top: 5px solid #59b4b1;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
