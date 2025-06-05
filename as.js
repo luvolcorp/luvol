@@ -107,9 +107,9 @@ async function handleSubmit(event) {
     formData.append('filename', file.name);
 
     [
-      'name', 'email', 'phone', 'product', 'color', 'serial',
+      'name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
       'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description',
-      'address', 'address_detail'
+      
     ].forEach(id => {
       formData.append(id, form[id]?.value || '');
     });
