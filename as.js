@@ -97,46 +97,44 @@ async function handleSubmit(event) {
   const form = event.target;
   const file = form.image.files[0];
   const formData = new FormData();
+// 기존 코드에서 formData 선언과 append는 공통으로 위에서 실행
+['name', 'phone', 'address', 'address_detail', 'product', 'color', 'serial',
+ 'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'].forEach(id => {
+  formData.append(id, form[id]?.value || '');
+});
 
-  // ✅ 모든 기본 필드 추가
-  ['name', 'phone', 'address', 'address_detail', 'product', 'color', 'serial',
-   'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'].forEach(id => {
-    formData.append(id, form[id]?.value || '');
-  });
-
-  const submitData = async () => {
-    try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbyTcPT114uyUsEAL2BCokPuDlE2dc4L_87meNZ65sbEsaElrUgsFspPwiHO5QOuoRUg/exec", {
-        method: "POST",
-        body: formData
-      });
-
-      const result = await response.json();
-      if (result.result === "success") {
-        window.location.href = "https://luvol.co.kr/thanks.html";
-      } else {
-        alert("접수는 되었으나 리디렉션에 실패했습니다.");
-      }
-    } catch (e) {
-      alert("접수 중 오류가 발생했습니다.");
-    } finally {
-      document.getElementById('loading-message').style.display = 'none';
+const submitData = async () => {
+  try {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbyTcPT114uyUsEAL2BCokPuDlE2dc4L_87meNZ65sbEsaElrUgsFspPwiHO5QOuoRUg/exec", {
+      method: "POST",
+      body: formData
+    });
+    const result = await response.json();
+    if (result.result === "success") {
+      window.location.href = "https://luvol.co.kr/thanks.html";
+    } else {
+      alert("접수는 되었으나 리디렉션에 실패했습니다.");
     }
-  };
-
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function () {
-      const base64Data = reader.result.split(',')[1];
-      formData.append('file', base64Data);
-      formData.append('mimeType', file.type);
-      formData.append('filename', file.name);
-      submitData();
-    };
-    reader.readAsDataURL(file);
-  } else {
-    submitData();
+  } catch (e) {
+    alert("접수 중 오류가 발생했습니다.");
+  } finally {
+    document.getElementById('loading-message').style.display = 'none';
   }
+};
+
+if (file) {
+  const reader = new FileReader();
+  reader.onload = function () {
+    const base64Data = reader.result.split(',')[1];
+    formData.append('file', base64Data);
+    formData.append('mimeType', file.type);
+    formData.append('filename', file.name);
+    submitData(); // 파일 처리 후 전송
+  };
+  reader.readAsDataURL(file);
+} else {
+  submitData(); // 파일 없을 경우 즉시 전송
+}
 }
 
 	function updateSubIssues() {}
