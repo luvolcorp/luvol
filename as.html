@@ -59,22 +59,38 @@
     }
   }
 
-	async function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const form = event.target;
-    const formData = new FormData(form);
-    formData.append('file', form.image.files[0]);
+    const file = form.image.files[0];
 
-    const response = await fetch('https://script.google.com/macros/s/AKfycbyTcPT114uyUsEAL2BCokPuDlE2dc4L_87meNZ65sbEsaElrUgsFspPwiHO5QOuoRUg/exec', {
-      method: 'POST',
-      body: formData,
-    });
+    const reader = new FileReader();
+    reader.onload = async function () {
+      const base64Data = reader.result.split(',')[1];
+      const formData = new FormData();
+      formData.append('file', base64Data);
+      formData.append('mimeType', file.type);
+      formData.append('filename', file.name);
 
-    if (response.ok) {
-      window.location.href = "https://luvol.co.kr/thanks.html";
-    } else {
-      alert("접수 중 오류 발생");
-    }
+      ['name', 'email', 'phone', 'product', 'serial',
+       'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
+      ].forEach(id => {
+        formData.append(id, form[id].value);
+      });
+
+      const res = await fetch("https://script.google.com/macros/s/AKfycbyTcPT114uyUsEAL2BCokPuDlE2dc4L_87meNZ65sbEsaElrUgsFspPwiHO5QOuoRUg/exec", {
+        method: "POST",
+        body: formData
+      });
+
+      if (res.ok) {
+        window.location.href = "https://luvol.co.kr/thanks.html";
+      } else {
+        alert("접수 실패: " + (await res.text()));
+      }
+    };
+
+    reader.readAsDataURL(file);
   }
 </script>
 <body>
@@ -131,8 +147,8 @@
       <label for="issue-description">고장 증상 추가 설명 (선택)
         <textarea id="issue-description" name="issue_description" rows="4"></textarea>
       </label>
-      <label for="imageLink">사진 링크 (선택)
-        <input type="file" id="image" name="file">
+      <label for="imageLink">사진 업로드 (선택)
+        <input type="file" id="image" name="image" accept="image/*">
       </label>
       <button type="submit">접수하기</button>
     </form>
