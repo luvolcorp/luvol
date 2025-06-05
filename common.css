@@ -19,9 +19,23 @@ header {
   margin-top: 1rem;
 }
 
-.logo img {
-  max-width: 200px;
+/* 로고 이미지 반응형 설정 */
+.logo-img {
+  max-width: 100%;
   height: auto;
+  width: 200px; /* 기본값 */
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    width: 120px;
+  }
 }
 
 /* 상단 메뉴 */
@@ -62,4 +76,42 @@ footer a img {
   width: 30px;
   margin: 0 0.5rem;
   vertical-align: middle;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-box {
+  background: #ffffff;
+  padding: 2em 3em;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  color: #333;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  border: 5px solid #ddd;
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
