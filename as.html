@@ -6,6 +6,7 @@
   <title>LUVOL 제품 A/S 접수</title>
   <link rel="stylesheet" href="common.css">
   <link rel="stylesheet" href="as.css">
+	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <script src="as.js"></script>
 <body>
@@ -22,17 +23,15 @@
       <label for="name">이름
         <input type="text" id="name" name="name" required>
       </label>
-      <label for="email">이메일
-        <input type="email" id="email" name="email" required>
-      </label>
       <label for="phone">전화번호
         <input type="tel" id="phone" name="phone">
       </label>
 			<label for="address">주소
-				<input type="text" id="address" name="address" required readonly onclick="execDaumPostcode()" placeholder="주소 검색 클릭">
+				<input type="text" id="address" name="address" readonly required>
+				<button type="button" onclick="execDaumPostcode()">주소 검색</button>
 			</label>
 			<label for="address_detail">상세 주소
-				<input type="text" id="address_detail" name="address_detail" placeholder="예: 101동 1001호">
+				<input type="text" id="address_detail" name="address_detail">
 			</label>
       <label for="product">제품명
         <select id="product" name="product" required>
@@ -44,6 +43,11 @@
           <option value="DR-500">DR-500</option>
         </select>
       </label>
+			<label for="color">색상
+				<select id="color" name="color" required>
+					<option value="">제품을 먼저 선택하세요</option>
+				</select>
+			</label>
       <label for="serial">시리얼 번호
         <input type="text" id="serial" name="serial">
       </label>
