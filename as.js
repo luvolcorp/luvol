@@ -84,11 +84,13 @@ function execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function(data) {
       const fullAddr = data.roadAddress || data.jibunAddress;
+			 alert("선택된 주소: " + fullAddr); // 추가
       document.getElementById("address").value = fullAddr;
       document.getElementById("address_detail").focus();
     }
   }).open();
 }
+window.execDaumPostcode = execDaumPostcode;
 
 // 5. 제출 처리
 async function handleSubmit(event) {
@@ -105,9 +107,6 @@ async function handleSubmit(event) {
     formData.append('file', base64Data);
     formData.append('mimeType', file.type);
     formData.append('filename', file.name);
-		formData.append('address', form.address.value);
-		formData.append('address_detail', form.address_detail.value);
-
 
     ['name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
       'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
@@ -115,6 +114,7 @@ async function handleSubmit(event) {
       formData.append(id, form[id]?.value || '');
     });
 
+	// 구글 시트에 데이터 전송
     try {
       const response = await fetch("https://script.google.com/macros/s/AKfycbyTcPT114uyUsEAL2BCokPuDlE2dc4L_87meNZ65sbEsaElrUgsFspPwiHO5QOuoRUg/exec", {
         method: "POST",

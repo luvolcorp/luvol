@@ -42,7 +42,7 @@ button {
   width: 100%;
   padding: 1rem;
   font-size: 1rem;
-  background: #007BFF;
+  background: #59b4b1;
   color: white;
   border: none;
   border-radius: 5px;
@@ -51,7 +51,7 @@ button {
 }
 
 button:hover {
-  background: #0056b3;
+  background: #253860;
 }
 
 /* 주소 모달 스타일 */
@@ -85,29 +85,4 @@ button:hover {
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
-}
-
-/* 주소 입력 래퍼 */
-.address-wrapper {
-  position: relative;
-  margin-top: 1.2rem;
-}
-
-/* 주소 검색 버튼 (인풋 내부 오른쪽에 위치) */
-.address-wrapper button {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
-  border: none;
-  background-color: #59b4b1;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.address-wrapper input {
-  padding-right: 110px; /* 버튼이 겹치지 않게 여유 공간 확보 */
 }

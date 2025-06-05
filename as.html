@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="as.css">
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
-<script src="as.js"></script>
 <body>
   <header>
     <h1>
@@ -27,9 +26,9 @@
         <input type="tel" id="phone" name="phone" required>
       </label>
 	<label for="address">주소</label>
-<div class="address-wrapper">
-  <input type="text" id="address" name="address" readonly placeholder="도로명 주소를 검색하세요" required>
-  <button type="button" onclick="openAddressModal()">검색</button>
+<div class="address">
+  <input type="text" id="address" name="address" placeholder="도로명 주소를 검색하세요" >
+  <button type="button" onclick="execDaumPostcode()">검색</button>
 </div>
 			<label for="address_detail">상세 주소
 				<input type="text" id="address_detail" name="address_detail" required>
@@ -94,5 +93,6 @@
     <a href="https://smartstore.naver.com/luvol" target="_blank"><img src="assets/naver.png" alt="Naver Shopping"></a>
     <p>&copy; 2025 LUVOL All rights reserved.</p>
   </footer>
+	<script src="as.js"></script>
 </body>
 </html>
