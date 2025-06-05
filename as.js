@@ -1,10 +1,10 @@
 // 1. 제품별 색상 정보
 const colorMap = {
   "RS-500": ["블랙", "화이트"],
-  "FS-500": ["화이트"],
-  "PS-400": ["레드", "블랙", "화이트"],
-  "PS-300": ["화이트", "핑크"],
-  "DR-500": ["블랙"]
+  "FS-500": ["블랙", "화이트"],
+  "PS-400": ["블랙", "화이트"],
+  "PS-300": ["블랙&화이트"],
+  "DR-500": ["블랙&화이트"]
 };
 
 // 2. 고장 증상 단계별 매핑
@@ -43,40 +43,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 1단계 → 2단계
-  document.getElementById('issue-category').addEventListener('change', () => {
-    const category = document.getElementById('issue-category').value;
-    const detailSelect = document.getElementById('issue-detail');
-    const subdetailSelect = document.getElementById('issue-subdetail');
-    detailSelect.innerHTML = '<option value="">2단계 선택</option>';
-    subdetailSelect.innerHTML = '<option value="">3단계 선택</option>';
+	document.getElementById('issue-category').addEventListener('change', function () {
+		const category = this.value;
+		const detailSelect = document.getElementById('issue-detail');
+		const subdetailSelect = document.getElementById('issue-subdetail');
+		detailSelect.innerHTML = '<option value="">먼저 1단계를 선택하세요</option>';
+		subdetailSelect.innerHTML = '<option value="">먼저 2단계를 선택하세요</option>';
 
-    if (issueMap[category]) {
-      Object.keys(issueMap[category]).forEach(detail => {
-        const opt = document.createElement('option');
-        opt.value = detail;
-        opt.textContent = detail;
-        detailSelect.appendChild(opt);
-      });
-    }
-  });
+		if (issueMap[category]) {
+			Object.keys(issueMap[category]).forEach(detail => {
+				const opt = document.createElement('option');
+				opt.value = detail;
+				opt.textContent = detail;
+				detailSelect.appendChild(opt);
+			});
+		}
+	});
 
-  // 2단계 → 3단계
-  document.getElementById('issue-detail').addEventListener('change', () => {
-    const category = document.getElementById('issue-category').value;
-    const detail = document.getElementById('issue-detail').value;
-    const subdetailSelect = document.getElementById('issue-subdetail');
-    subdetailSelect.innerHTML = '<option value="">3단계 선택</option>';
+	document.getElementById('issue-detail').addEventListener('change', function () {
+		const category = document.getElementById('issue-category').value;
+		const detail = this.value;
+		const subdetailSelect = document.getElementById('issue-subdetail');
+		subdetailSelect.innerHTML = '<option value="">먼저 2단계를 선택하세요</option>';
 
-    if (issueMap[category] && issueMap[category][detail]) {
-      issueMap[category][detail].forEach(item => {
-        const opt = document.createElement('option');
-        opt.value = item;
-        opt.textContent = item;
-        subdetailSelect.appendChild(opt);
-      });
-    }
-  });
+		if (issueMap[category] && issueMap[category][detail]) {
+			issueMap[category][detail].forEach(item => {
+				const opt = document.createElement('option');
+				opt.value = item;
+				opt.textContent = item;
+				subdetailSelect.appendChild(opt);
+			});
+		}
+	});
 });
 
 // 4. 주소 검색 API (전역에서 접근 가능)
@@ -94,41 +92,19 @@ window.execDaumPostcode = execDaumPostcode;
 // 5. 제출 처리
 async function handleSubmit(event) {
   event.preventDefault();
-  document.getElementById('loading-message').style.display = 'flex'; // 로딩 표시
+  document.getElementById('loading-message').style.display = 'flex';
 
   const form = event.target;
   const file = form.image.files[0];
-  const reader = new FileReader();
-
-reader.onload = async function () {
-  let base64Data = '';
-  if (reader.result) {
-    base64Data = reader.result.split(',')[1];
-  }
   const formData = new FormData();
-  if (base64Data) {
-    formData.append('file', base64Data);
-    formData.append('mimeType', file.type);
-    formData.append('filename', file.name);
-  }
 
-		// ['name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
-		// 	'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
-		// ].forEach(id => {
-		// 	formData.append(id, form[id]?.value || '');
-		// });
-
-		if (file) {
-  reader.readAsDataURL(file);
-} else {
-  const formData = new FormData();
-  ['name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
-    'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
-  ].forEach(id => {
+  // ✅ 모든 기본 필드 추가
+  ['name', 'phone', 'address', 'address_detail', 'product', 'color', 'serial',
+   'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'].forEach(id => {
     formData.append(id, form[id]?.value || '');
   });
 
-	// 구글 시트에 데이터 전송
+  const submitData = async () => {
     try {
       const response = await fetch("https://script.google.com/macros/s/AKfycbyTcPT114uyUsEAL2BCokPuDlE2dc4L_87meNZ65sbEsaElrUgsFspPwiHO5QOuoRUg/exec", {
         method: "POST",
@@ -143,17 +119,25 @@ reader.onload = async function () {
       }
     } catch (e) {
       alert("접수 중 오류가 발생했습니다.");
+    } finally {
       document.getElementById('loading-message').style.display = 'none';
     }
   };
 
   if (file) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      const base64Data = reader.result.split(',')[1];
+      formData.append('file', base64Data);
+      formData.append('mimeType', file.type);
+      formData.append('filename', file.name);
+      submitData();
+    };
     reader.readAsDataURL(file);
   } else {
-    reader.onload();
+    submitData();
   }
+}
 
 	function updateSubIssues() {}
 window.updateSubIssues = updateSubIssues;
-	}
-}
