@@ -24,14 +24,15 @@
         <input type="text" id="name" name="name" required>
       </label>
       <label for="phone">전화번호
-        <input type="tel" id="phone" name="phone">
+        <input type="tel" id="phone" name="phone" required>
       </label>
-			<label for="address">주소
-				<input type="text" id="address" name="address" readonly required>
-				<button type="button" onclick="execDaumPostcode()">주소 검색</button>
-			</label>
+	<label for="address">주소</label>
+<div class="address-wrapper">
+  <input type="text" id="address" name="address" readonly placeholder="도로명 주소를 검색하세요" required>
+  <button type="button" onclick="openAddressModal()">검색</button>
+</div>
 			<label for="address_detail">상세 주소
-				<input type="text" id="address_detail" name="address_detail">
+				<input type="text" id="address_detail" name="address_detail" required>
 			</label>
       <label for="product">제품명
         <select id="product" name="product" required>
@@ -49,7 +50,7 @@
 				</select>
 			</label>
       <label for="serial">시리얼 번호
-        <input type="text" id="serial" name="serial">
+        <input type="text" id="serial" name="serial" required>
       </label>
       <label for="issue-category">고장 증상 (1단계)
         <select id="issue-category" name="issue_category" onchange="updateSubIssues()" required>

@@ -108,8 +108,7 @@ async function handleSubmit(event) {
 
     [
       'name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
-      'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description',
-      
+      'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
     ].forEach(id => {
       formData.append(id, form[id]?.value || '');
     });
