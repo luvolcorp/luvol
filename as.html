@@ -73,7 +73,7 @@
       formData.append('filename', file.name);
 
       ['name', 'email', 'phone', 'product', 'serial',
-       'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
+				'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
       ].forEach(id => {
         formData.append(id, form[id].value);
       });
@@ -83,11 +83,12 @@
         body: formData
       });
 
-      if (res.ok) {
-        window.location.href = "https://luvol.co.kr/thanks.html";
-      } else {
-        alert("접수 실패: " + (await res.text()));
-      }
+			const result = await response.json();
+			if (result.result === "success") {
+				window.location.href = "https://luvol.co.kr/thanks.html";
+			} else {
+				alert("접수는 되었으나 리디렉션에 실패했습니다.");
+			}
     };
 
     reader.readAsDataURL(file);
