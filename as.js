@@ -101,18 +101,23 @@ async function handleSubmit(event) {
   const file = form.image.files[0];
   const reader = new FileReader();
 
-  reader.onload = async function () {
-    const base64Data = reader.result.split(',')[1];
-    const formData = new FormData();
+reader.onload = async function () {
+  let base64Data = '';
+  if (reader.result) {
+    base64Data = reader.result.split(',')[1];
+  }
+  const formData = new FormData();
+  if (base64Data) {
     formData.append('file', base64Data);
     formData.append('mimeType', file.type);
     formData.append('filename', file.name);
+  }
 
-    ['name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
-      'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
-    ].forEach(id => {
-      formData.append(id, form[id]?.value || '');
-    });
+		['name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
+			'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
+		].forEach(id => {
+			formData.append(id, form[id]?.value || '');
+		});
 
 	// 구글 시트에 데이터 전송
     try {
@@ -138,4 +143,7 @@ async function handleSubmit(event) {
   } else {
     reader.onload();
   }
+
+	function updateSubIssues() {}
+window.updateSubIssues = updateSubIssues;
 }
