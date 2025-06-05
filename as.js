@@ -13,11 +13,12 @@ async function handleSubmit(event) {
     formData.append('mimeType', file.type);
     formData.append('filename', file.name);
 
-    ['name', 'email', 'phone', 'product', 'serial',
-      'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
-    ].forEach(id => {
-      formData.append(id, form[id].value);
-    });
+		['name', 'email', 'phone', 'product', 'serial',
+		'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description',
+		'address', 'address_detail'
+		].forEach(id => {
+			formData.append(id, form[id].value);
+		});
 
     try {
       const response = await fetch("https://script.google.com/macros/s/AKfycbyTcPT114uyUsEAL2BCokPuDlE2dc4L_87meNZ65sbEsaElrUgsFspPwiHO5QOuoRUg/exec", {
