@@ -105,9 +105,11 @@ async function handleSubmit(event) {
     formData.append('file', base64Data);
     formData.append('mimeType', file.type);
     formData.append('filename', file.name);
+		formData.append('address', form.address.value);
+		formData.append('address_detail', form.address_detail.value);
 
-    [
-      'name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
+
+    ['name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
       'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
     ].forEach(id => {
       formData.append(id, form[id]?.value || '');
