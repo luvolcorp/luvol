@@ -27,8 +27,8 @@
       </label>
 	<label for="address">주소</label>
 <div class="address">
-  <input type="text" id="address" name="address" placeholder="도로명 주소를 검색하세요" onclick="execDaumPostcode()" required>
-  <button type="button" onclick="execDaumPostcode()">검색</button>
+  <input type="text" id="address" name="address" readonly placeholder="도로명 주소를 검색하세요" onclick="execDaumPostcode()" required>
+  <!-- <button type="button" onclick="execDaumPostcode()">검색</button> -->
 </div>
 			<label for="address_detail">상세 주소
 				<input type="text" id="address_detail" name="address_detail" required>
@@ -52,7 +52,7 @@
         <input type="text" id="serial" name="serial" required>
       </label>
       <label for="issue-category">고장 증상 (1단계)
-        <select id="issue-category" name="issue_category" onchange="updateSubIssues()" required>
+        <select id="issue-category" name="issue_category" required>
           <option value="">선택하세요</option>
           <option value="전원 문제">전원 문제</option>
           <option value="소리 문제">소리 문제</option>
@@ -60,7 +60,7 @@
         </select>
       </label>
       <label for="issue-detail">고장 증상 상세 (2단계)
-        <select id="issue-detail" name="issue_detail" onchange="updateSubDetail()" required>
+        <select id="issue-detail" name="issue_detail" required>
           <option value="">먼저 1단계를 선택하세요</option>
         </select>
       </label>

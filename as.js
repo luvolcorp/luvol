@@ -84,7 +84,6 @@ function execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function(data) {
       const fullAddr = data.roadAddress || data.jibunAddress;
-			 alert("선택된 주소: " + fullAddr); // 추가
       document.getElementById("address").value = fullAddr;
       document.getElementById("address_detail").focus();
     }
@@ -113,11 +112,21 @@ reader.onload = async function () {
     formData.append('filename', file.name);
   }
 
-		['name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
-			'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
-		].forEach(id => {
-			formData.append(id, form[id]?.value || '');
-		});
+		// ['name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
+		// 	'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
+		// ].forEach(id => {
+		// 	formData.append(id, form[id]?.value || '');
+		// });
+
+		if (file) {
+  reader.readAsDataURL(file);
+} else {
+  const formData = new FormData();
+  ['name', 'phone', 'address', 'address_detail','product', 'color', 'serial',
+    'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
+  ].forEach(id => {
+    formData.append(id, form[id]?.value || '');
+  });
 
 	// 구글 시트에 데이터 전송
     try {
@@ -146,4 +155,5 @@ reader.onload = async function () {
 
 	function updateSubIssues() {}
 window.updateSubIssues = updateSubIssues;
+	}
 }
