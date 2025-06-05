@@ -1,0 +1,65 @@
+/* 기본 폰트 및 레이아웃 */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #f8f8f8;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+header {
+  background: #222;
+  color: #fff;
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+.logo {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.logo img {
+  max-width: 200px;
+  height: auto;
+}
+
+/* 상단 메뉴 */
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+nav ul li {
+  margin: 0 1rem;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+nav ul li a:hover {
+  background-color: #59b4b1;
+  color: #222;
+}
+
+/* 푸터 */
+footer {
+  text-align: center;
+  padding: 1rem;
+  color: #999;
+}
+
+footer a img {
+  width: 30px;
+  margin: 0 0.5rem;
+  vertical-align: middle;
+}
