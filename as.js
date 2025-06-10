@@ -91,12 +91,14 @@ function execDaumPostcode() {
 }
 window.execDaumPostcode = execDaumPostcode;
 
-// 5. 제출 처리
+// 5. 접수 처리
 async function handleSubmit(event) {
   event.preventDefault();
   document.getElementById("loading-message").style.display = "block";
 
   const form = event.target;
+	const submitBtn = form.querySelector("button[type='submit']");
+  submitBtn.disabled = true; // ✅ 클릭 직후 비활성화
   const formData = new FormData(form);
   const address = `${formData.get("address")} ${formData.get("address_detail")}`;
   const imageFile = formData.get("image");
@@ -139,6 +141,7 @@ async function handleSubmit(event) {
     });
 
     document.getElementById("loading-message").style.display = "none";
+    submitBtn.disabled = false; // ✅ 응답 후 버튼 다시 활성화
 
     if (response.ok) {
       alert("접수가 완료되었습니다.");
@@ -148,6 +151,7 @@ async function handleSubmit(event) {
     }
   } catch (error) {
     document.getElementById("loading-message").style.display = "none";
+    submitBtn.disabled = false; // ✅ 오류 시에도 버튼 다시 활성화
     alert("접수 중 네트워크 오류가 발생했습니다.");
     console.error("fetch error:", error);
   }
