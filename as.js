@@ -132,7 +132,7 @@ async function handleSubmit(event) {
   };
 
   try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbyhwvPXwx02y6IDIkHg-ZRL7FEll1fxHv0aU4cVci2prjRcbaxCqm7XhPqiitoiAYC0/exec", {
+    const response = await fetch("https://luvolas.luvolcorp.workers.dev/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(jsonData)
@@ -152,3 +152,4 @@ async function handleSubmit(event) {
     console.error("fetch error:", error);
   }
 }
+
