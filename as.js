@@ -115,7 +115,7 @@ async function handleSubmit(event) {
     });
   }
 
-  const params = new URLSearchParams({
+  const jsonData = {
     name: formData.get("name"),
     phone: formData.get("phone"),
     address: address,
@@ -129,18 +129,26 @@ async function handleSubmit(event) {
     image: imageBase64,
     filename: filename,
     mimeType: mimeType
-  });
+  };
 
-  fetch("https://script.google.com/macros/s/AKfycbyhwvPXwx02y6IDIkHg-ZRL7FEll1fxHv0aU4cVci2prjRcbaxCqm7XhPqiitoiAYC0/exec", {
-  method: "POST",
-  headers: { "Content-Type": "application/x-www-form-urlencoded" },
-  body: params.toString()
-  }).then(() => {
+  try {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbyhwvPXwx02y6IDIkHg-ZRL7FEll1fxHv0aU4cVci2prjRcbaxCqm7XhPqiitoiAYC0/exec", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(jsonData)
+    });
+
     document.getElementById("loading-message").style.display = "none";
-    alert("접수가 완료되었습니다.");
-    form.reset();
-  }).catch(() => {
+
+    if (response.ok) {
+      alert("접수가 완료되었습니다.");
+      form.reset();
+    } else {
+      alert("서버 오류가 발생했습니다. 다시 시도해 주세요.");
+    }
+  } catch (error) {
     document.getElementById("loading-message").style.display = "none";
-    alert("접수 중 오류가 발생했습니다.");
-  });
+    alert("접수 중 네트워크 오류가 발생했습니다.");
+    console.error("fetch error:", error);
+  }
 }
