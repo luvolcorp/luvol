@@ -26,9 +26,8 @@ const issueMap = {
   }
 };
 
-// 3. 로딩 후 이벤트 설정
+// 3. 페이지 로딩 후 이벤트 설정
 document.addEventListener("DOMContentLoaded", () => {
-  // 제품 선택 시 색상 드롭다운 채우기
   document.getElementById('product').addEventListener('change', function () {
     const model = this.value;
     const colorSelect = document.getElementById('color');
@@ -43,41 +42,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-	document.getElementById('issue-category').addEventListener('change', function () {
-		const category = this.value;
-		const detailSelect = document.getElementById('issue-detail');
-		const subdetailSelect = document.getElementById('issue-subdetail');
-		detailSelect.innerHTML = '<option value="">먼저 1단계를 선택하세요</option>';
-		subdetailSelect.innerHTML = '<option value="">먼저 2단계를 선택하세요</option>';
+  document.getElementById('issue-category').addEventListener('change', function () {
+    const category = this.value;
+    const detailSelect = document.getElementById('issue-detail');
+    const subdetailSelect = document.getElementById('issue-subdetail');
+    detailSelect.innerHTML = '<option value="">먼저 1단계를 선택하세요</option>';
+    subdetailSelect.innerHTML = '<option value="">먼저 2단계를 선택하세요</option>';
 
-		if (issueMap[category]) {
-			Object.keys(issueMap[category]).forEach(detail => {
-				const opt = document.createElement('option');
-				opt.value = detail;
-				opt.textContent = detail;
-				detailSelect.appendChild(opt);
-			});
-		}
-	});
+    if (issueMap[category]) {
+      Object.keys(issueMap[category]).forEach(detail => {
+        const opt = document.createElement('option');
+        opt.value = detail;
+        opt.textContent = detail;
+        detailSelect.appendChild(opt);
+      });
+    }
+  });
 
-	document.getElementById('issue-detail').addEventListener('change', function () {
-		const category = document.getElementById('issue-category').value;
-		const detail = this.value;
-		const subdetailSelect = document.getElementById('issue-subdetail');
-		subdetailSelect.innerHTML = '<option value="">먼저 2단계를 선택하세요</option>';
+  document.getElementById('issue-detail').addEventListener('change', function () {
+    const category = document.getElementById('issue-category').value;
+    const detail = this.value;
+    const subdetailSelect = document.getElementById('issue-subdetail');
+    subdetailSelect.innerHTML = '<option value="">먼저 2단계를 선택하세요</option>';
 
-		if (issueMap[category] && issueMap[category][detail]) {
-			issueMap[category][detail].forEach(item => {
-				const opt = document.createElement('option');
-				opt.value = item;
-				opt.textContent = item;
-				subdetailSelect.appendChild(opt);
-			});
-		}
-	});
+    if (issueMap[category] && issueMap[category][detail]) {
+      issueMap[category][detail].forEach(item => {
+        const opt = document.createElement('option');
+        opt.value = item;
+        opt.textContent = item;
+        subdetailSelect.appendChild(opt);
+      });
+    }
+  });
+
+  // 폼 제출 이벤트 연결
+  document.querySelector("form").addEventListener("submit", handleSubmit);
 });
 
-// 4. 주소 검색 API (전역에서 접근 가능)
+// 4. 주소 검색 API
 function execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function(data) {
@@ -94,20 +96,21 @@ async function handleSubmit(event) {
   event.preventDefault();
   document.getElementById('loading-message').style.display = 'flex';
 
-  const form = event.target;
-  const file = form.image.files[0];
   const formData = new FormData();
-
-  // 텍스트 필드 추가
-  ['name', 'phone', 'address', 'address_detail', 'product', 'color', 'serial',
+  const fields = [
+    'name', 'phone', 'address', 'address_detail',
+    'product', 'color', 'serial',
     'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
-	].forEach(id => {
-  const element = document.querySelector(`#${id}`);
-  formData.append(id, element?.value || '');
-});
+  ];
 
+  fields.forEach(id => {
+    const element = document.querySelector(`#${id}`);
+    formData.append(id, element?.value || '');
+  });
 
-  // 파일이 있으면 base64 인코딩 후 전송
+  const fileInput = document.querySelector('#image');
+  const file = fileInput?.files[0];
+
   if (file) {
     const reader = new FileReader();
     reader.onload = async function () {
@@ -119,13 +122,15 @@ async function handleSubmit(event) {
     };
     reader.readAsDataURL(file);
   } else {
+    // 파일이 없을 경우에도 전송
     await sendToGoogleSheet(formData);
   }
 }
 
+// 6. 전송 함수
 async function sendToGoogleSheet(formData) {
   try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbyTcPT114uyUsEAL2BCokPuDlE2dc4L_87meNZ65sbEsaElrUgsFspPwiHO5QOuoRUg/exec", {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbzDZrJW13aLRDcxRVcsZKRTtU70LuSzdyYZJQBxy6J8WFR66E-pWC6CicI0TK7t8PN5/exec", {
       method: "POST",
       body: formData
     });
@@ -137,12 +142,8 @@ async function sendToGoogleSheet(formData) {
       alert("접수는 되었으나 리디렉션에 실패했습니다.");
     }
   } catch (e) {
-    alert("접수 중 오류가 발생했습니다.");
+    alert("접수 중 오류가 발생했습니다: " + e.message);
   } finally {
     document.getElementById('loading-message').style.display = 'none';
   }
 }
-
-
-	function updateSubIssues() {}
-window.updateSubIssues = updateSubIssues;
