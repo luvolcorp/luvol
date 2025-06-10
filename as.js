@@ -1,5 +1,4 @@
-
-// 3. 페이지 로딩 후 이벤트 설정
+// 페이지 로딩 후 이벤트 설정
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('product').addEventListener('change', function () {
     const model = this.value;
