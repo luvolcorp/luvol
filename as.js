@@ -97,18 +97,45 @@ async function handleSubmit(event) {
   const form = event.target;
   const file = form.image.files[0];
   const formData = new FormData();
-// 기존 코드에서 formData 선언과 append는 공통으로 위에서 실행
-['name', 'phone', 'address', 'address_detail', 'product', 'color', 'serial',
- 'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'].forEach(id => {
-  formData.append(id, form[id]?.value || '');
-});
 
-const submitData = async () => {
+  // 텍스트 필드 추가
+  ['name', 'phone', 'address', 'address_detail', 'product', 'color', 'serial',
+   'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'].forEach(id => {
+    // formData.append(id, form[id]?.value || '');
+		const fieldValue = form.querySelector(`#${id}`)?.value || '';
+formData.append(id, fieldValue);
+
+  });
+
+	console.log("주소 확인", form["address"]?.value);
+console.log("상세주소 확인", form["address_detail"]?.value);
+console.log("전화번호 확인", form["phone"]?.value);
+console.log("색상 확인", form["color"]?.value);
+
+
+  // 파일이 있으면 base64 인코딩 후 전송
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = async function () {
+      const base64Data = reader.result.split(',')[1];
+      formData.append('file', base64Data);
+      formData.append('mimeType', file.type);
+      formData.append('filename', file.name);
+      await sendToGoogleSheet(formData);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    await sendToGoogleSheet(formData);
+  }
+}
+
+async function sendToGoogleSheet(formData) {
   try {
     const response = await fetch("https://script.google.com/macros/s/AKfycbyTcPT114uyUsEAL2BCokPuDlE2dc4L_87meNZ65sbEsaElrUgsFspPwiHO5QOuoRUg/exec", {
       method: "POST",
       body: formData
     });
+
     const result = await response.json();
     if (result.result === "success") {
       window.location.href = "https://luvol.co.kr/thanks.html";
@@ -120,22 +147,8 @@ const submitData = async () => {
   } finally {
     document.getElementById('loading-message').style.display = 'none';
   }
-};
+}
 
-if (file) {
-  const reader = new FileReader();
-  reader.onload = function () {
-    const base64Data = reader.result.split(',')[1];
-    formData.append('file', base64Data);
-    formData.append('mimeType', file.type);
-    formData.append('filename', file.name);
-    submitData(); // 파일 처리 후 전송
-  };
-  reader.readAsDataURL(file);
-} else {
-  submitData(); // 파일 없을 경우 즉시 전송
-}
-}
 
 	function updateSubIssues() {}
 window.updateSubIssues = updateSubIssues;
