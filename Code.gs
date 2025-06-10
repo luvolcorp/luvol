@@ -1,28 +1,48 @@
 function doPost(e) {
-  const sheet = SpreadsheetApp.openById("1mgh_nMlPsT-bWrrHGDMNBhBxe99nZusVCIZOKYouEgc").getSheetByName("시트1"); // 시트명 확인
-  const folder = DriveApp.getFolderById("1SFigBgGBUs9wXDSCYFqxRxE3G5OAE0MJ"); // 업로드할 폴더 ID 필요
+  const folder = DriveApp.getFolderById("1SFigBgGBUs9wXDSCYFqxRxE3G5OAE0MJ");
+  const sheet = SpreadsheetApp.openById("1WN-YFCN3ayhhFwAhFXCsEz89pOTHp3hSUYMAAODHLnk").getSheetByName("AS");
 
-  if (e.parameters && e.parameters.image && e.parameters.image !== "파일없음") {
-    // base64 이미지 처리 (image는 JSON에 넣지 않음)
-    const blob = Utilities.base64Decode(e.parameters.image);
-    const file = folder.createFile(blob, e.parameters.filename, e.parameters.mimeType);
-    e.parameters.image = file.getUrl();
+  // ✅ JSON 데이터 수신
+  const data = JSON.parse(e.postData.contents);
+
+  const name = data.name;
+  const phone = data.phone;
+  const address = data.address;
+  const product = data.product;
+  const color = data.color;
+  const serial = data.serial;
+  const issue_category = data.issue_category;
+  const issue_detail = data.issue_detail;
+  const issue_subdetail = data.issue_subdetail;
+  const issue_description = data.issue_description;
+
+  let imageUrl = "파일없음";
+
+  if (data.image && data.image !== "파일없음") {
+    const decoded = Utilities.base64Decode(data.image);
+    const blob = Utilities.newBlob(decoded, data.mimeType, data.filename);
+    const file = folder.createFile(blob);
+    imageUrl = file.getUrl();
   }
 
   sheet.appendRow([
     new Date(),
-    e.parameters.name,
-    e.parameters.phone,
-    e.parameters.address,
-    e.parameters.product,
-    e.parameters.color,
-    e.parameters.serial,
-    e.parameters.issue_category,
-    e.parameters.issue_detail,
-    e.parameters.issue_subdetail,
-    e.parameters.issue_description || '',
-    e.parameters.image || '파일없음'
+    name,
+    phone,
+    address,
+    product,
+    color,
+    serial,
+    issue_category,
+    issue_detail,
+    issue_subdetail,
+    issue_description || '',
+    imageUrl
   ]);
 
   return ContentService.createTextOutput("success").setMimeType(ContentService.MimeType.TEXT);
 }
+
+
+
+https://script.google.com/macros/s/AKfycbyhwvPXwx02y6IDIkHg-ZRL7FEll1fxHv0aU4cVci2prjRcbaxCqm7XhPqiitoiAYC0/exec

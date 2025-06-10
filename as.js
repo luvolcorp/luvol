@@ -1,30 +1,3 @@
-// 1. 제품별 색상 정보
-const colorMap = {
-  "RS-500": ["블랙", "화이트"],
-  "FS-500": ["블랙", "화이트"],
-  "PS-400": ["블랙", "화이트"],
-  "PS-300": ["블랙&화이트"],
-  "DR-500": ["블랙&화이트"]
-};
-
-// 2. 고장 증상 단계별 매핑
-const issueMap = {
-  '전원 문제': {
-    '전원이 안 켜짐': ['충전 중 무반응', '전원 버튼 눌러도 반응 없음'],
-    '배터리 문제': ['배터리 빨리 닳음', '배터리 충전 안됨'],
-    '전원 어댑터 문제': ['어댑터 손상', '전류 불안정']
-  },
-  '소리 문제': {
-    '소리가 안남': ['전체 무음', '일부 음역만 무음'],
-    '음질 불량': ['잡음 발생', '왜곡된 소리'],
-    '스피커 이상': ['한쪽만 작동', '소리 크기 불균형']
-  },
-  '블루투스 연결': {
-    '연결 불가': ['페어링 실패', '비밀번호 오류'],
-    '자주 끊김': ['간헐적 끊김', '환경에 따라 불안정'],
-    '기기 인식 실패': ['목록에 안 보임', '기기명 이상하게 표시']
-  }
-};
 
 // 3. 페이지 로딩 후 이벤트 설정
 document.addEventListener("DOMContentLoaded", () => {
@@ -83,7 +56,18 @@ document.addEventListener("DOMContentLoaded", () => {
 function execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function(data) {
-      const fullAddr = data.roadAddress || data.jibunAddress;
+      let fullAddr = ''; // 최종 주소 변수
+
+      if (data.userSelectedType === 'R') {
+        fullAddr = data.roadAddress;
+      } else {
+        fullAddr = data.jibunAddress;
+      }
+
+      if (data.buildingName !== '' && data.apartment === 'Y') {
+        fullAddr += ` (${data.buildingName})`;
+      }
+
       document.getElementById("address").value = fullAddr;
       document.getElementById("address_detail").focus();
     }
@@ -132,3 +116,23 @@ async function handleSubmit(event) {
     console.error("fetch error:", error);
   }
 }
+
+// 6. 전화번호 하이픈 생성
+document.getElementById('phone').addEventListener('input', function (e) {
+  let value = e.target.value.replace(/\D/g, ''); // 숫자만 남기기
+
+  if (value.startsWith("010")) {
+    if (value.length > 11) value = value.slice(0, 11);
+
+    if (value.length >= 8) {
+      e.target.value = value.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
+    } else if (value.length >= 4) {
+      e.target.value = value.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+    } else {
+      e.target.value = value;
+    }
+  } else {
+    // 010 이외 입력 제한
+    e.target.value = value.slice(0, 11);
+  }
+});
