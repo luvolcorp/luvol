@@ -1,44 +1,28 @@
 function doPost(e) {
-  try {
-    const folderId = "1SFigBgGBUs9wXDSCYFqxRxE3G5OAE0MJ"; // 첨부파일 저장용 폴더 ID
-    const folder = DriveApp.getFolderById(folderId);
+  const sheet = SpreadsheetApp.openById("1mgh_nMlPsT-bWrrHGDMNBhBxe99nZusVCIZOKYouEgc").getSheetByName("시트1"); // 시트명 확인
+  const folder = DriveApp.getFolderById("1SFigBgGBUs9wXDSCYFqxRxE3G5OAE0MJ"); // 업로드할 폴더 ID 필요
 
-    // 유틸 함수 – 파라미터 안전 추출
-    const getParam = key => e.parameter[key] || (e.parameters && e.parameters[key] && e.parameters[key][0]) || '';
-
-    // 파일 처리 (있을 경우만)
-    let fileUrl = '';
-    if (e.parameter.file && e.parameter.mimeType && e.parameter.filename) {
-      const blob = Utilities.newBlob(Utilities.base64Decode(e.parameter.file), e.parameter.mimeType, e.parameter.filename);
-      const file = folder.createFile(blob);
-      fileUrl = file.getUrl();
-    }
-
-    // 시트에 데이터 기록
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("AS");
-    sheet.appendRow([
-      new Date(), // 접수 시간
-      getParam('name'),
-      getParam('phone'),
-      getParam('address'),
-      getParam('address_detail'),
-      getParam('product'),
-      getParam('color'),
-      getParam('serial'),
-      getParam('issue_category'),
-      getParam('issue_detail'),
-      getParam('issue_subdetail'),
-      getParam('issue_description'),
-      fileUrl // 파일이 없으면 빈 문자열
-    ]);
-
-    return ContentService
-      .createTextOutput(JSON.stringify({ result: "success" }))
-      .setMimeType(ContentService.MimeType.JSON);
-
-  } catch (error) {
-    return ContentService
-      .createTextOutput("오류 발생: " + error.message)
-      .setMimeType(ContentService.MimeType.TEXT);
+  if (e.parameters && e.parameters.image && e.parameters.image !== "파일없음") {
+    // base64 이미지 처리 (image는 JSON에 넣지 않음)
+    const blob = Utilities.base64Decode(e.parameters.image);
+    const file = folder.createFile(blob, e.parameters.filename, e.parameters.mimeType);
+    e.parameters.image = file.getUrl();
   }
+
+  sheet.appendRow([
+    new Date(),
+    e.parameters.name,
+    e.parameters.phone,
+    e.parameters.address,
+    e.parameters.product,
+    e.parameters.color,
+    e.parameters.serial,
+    e.parameters.issue_category,
+    e.parameters.issue_detail,
+    e.parameters.issue_subdetail,
+    e.parameters.issue_description || '',
+    e.parameters.image || '파일없음'
+  ]);
+
+  return ContentService.createTextOutput("success").setMimeType(ContentService.MimeType.TEXT);
 }

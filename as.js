@@ -94,56 +94,53 @@ window.execDaumPostcode = execDaumPostcode;
 // 5. 제출 처리
 async function handleSubmit(event) {
   event.preventDefault();
-  document.getElementById('loading-message').style.display = 'flex';
+  document.getElementById("loading-message").style.display = "block";
 
-  const formData = new FormData();
-  const fields = [
-    'name', 'phone', 'address', 'address_detail',
-    'product', 'color', 'serial',
-    'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
-  ];
+  const form = event.target;
+  const formData = new FormData(form);
+  const address = `${formData.get("address")} ${formData.get("address_detail")}`;
+  const imageFile = formData.get("image");
+  let imageBase64 = "파일없음";
+  let filename = "";
+  let mimeType = "";
 
-  fields.forEach(id => {
-    const element = document.querySelector(`#${id}`);
-    formData.append(id, element?.value || '');
+  if (imageFile && imageFile.name) {
+    filename = imageFile.name;
+    mimeType = imageFile.type;
+
+    const reader = new FileReader();
+    imageBase64 = await new Promise((resolve) => {
+      reader.onloadend = () => resolve(reader.result.split(',')[1]);
+      reader.readAsDataURL(imageFile);
+    });
+  }
+
+  const params = new URLSearchParams({
+    name: formData.get("name"),
+    phone: formData.get("phone"),
+    address: address,
+    product: formData.get("product"),
+    color: formData.get("color"),
+    serial: formData.get("serial"),
+    issue_category: formData.get("issue_category"),
+    issue_detail: formData.get("issue_detail"),
+    issue_subdetail: formData.get("issue_subdetail"),
+    issue_description: formData.get("issue_description") || "",
+    image: imageBase64,
+    filename: filename,
+    mimeType: mimeType
   });
 
-  const fileInput = document.querySelector('#image');
-  const file = fileInput?.files[0];
-
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = async function () {
-      const base64Data = reader.result.split(',')[1];
-      formData.append('file', base64Data);
-      formData.append('mimeType', file.type);
-      formData.append('filename', file.name);
-      await sendToGoogleSheet(formData);
-    };
-    reader.readAsDataURL(file);
-  } else {
-    // 파일이 없을 경우에도 전송
-    await sendToGoogleSheet(formData);
-  }
-}
-
-// 6. 전송 함수
-async function sendToGoogleSheet(formData) {
-  try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbzDZrJW13aLRDcxRVcsZKRTtU70LuSzdyYZJQBxy6J8WFR66E-pWC6CicI0TK7t8PN5/exec", {
-      method: "POST",
-      body: formData
-    });
-
-    const result = await response.json();
-    if (result.result === "success") {
-      window.location.href = "https://luvol.co.kr/thanks.html";
-    } else {
-      alert("접수는 되었으나 리디렉션에 실패했습니다.");
-    }
-  } catch (e) {
-    alert("접수 중 오류가 발생했습니다: " + e.message);
-  } finally {
-    document.getElementById('loading-message').style.display = 'none';
-  }
+  fetch("https://script.google.com/macros/s/AKfycbyhwvPXwx02y6IDIkHg-ZRL7FEll1fxHv0aU4cVci2prjRcbaxCqm7XhPqiitoiAYC0/exec", {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: params.toString()
+  }).then(() => {
+    document.getElementById("loading-message").style.display = "none";
+    alert("접수가 완료되었습니다.");
+    form.reset();
+  }).catch(() => {
+    document.getElementById("loading-message").style.display = "none";
+    alert("접수 중 오류가 발생했습니다.");
+  });
 }
