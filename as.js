@@ -100,17 +100,11 @@ async function handleSubmit(event) {
 
   // 텍스트 필드 추가
   ['name', 'phone', 'address', 'address_detail', 'product', 'color', 'serial',
-   'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'].forEach(id => {
-    // formData.append(id, form[id]?.value || '');
-		const fieldValue = form.querySelector(`#${id}`)?.value || '';
-formData.append(id, fieldValue);
-
-  });
-
-	console.log("주소 확인", form["address"]?.value);
-console.log("상세주소 확인", form["address_detail"]?.value);
-console.log("전화번호 확인", form["phone"]?.value);
-console.log("색상 확인", form["color"]?.value);
+    'issue_category', 'issue_detail', 'issue_subdetail', 'issue_description'
+	].forEach(id => {
+  const element = document.querySelector(`#${id}`);
+  formData.append(id, element?.value || '');
+});
 
 
   // 파일이 있으면 base64 인코딩 후 전송
