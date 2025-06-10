@@ -97,51 +97,27 @@ async function handleSubmit(event) {
   document.getElementById("loading-message").style.display = "block";
 
   const form = event.target;
-	const submitBtn = form.querySelector("button[type='submit']");
-  submitBtn.disabled = true; // ✅ 클릭 직후 비활성화
+  const submitBtn = form.querySelector("button[type='submit']");
+  submitBtn.disabled = true;
+
   const formData = new FormData(form);
   const address = `${formData.get("address")} ${formData.get("address_detail")}`;
+  formData.set("address", address);
+  formData.delete("address_detail");
+
   const imageFile = formData.get("image");
-  let imageBase64 = "파일없음";
-  let filename = "";
-  let mimeType = "";
-
-  if (imageFile && imageFile.name) {
-    filename = imageFile.name;
-    mimeType = imageFile.type;
-
-    const reader = new FileReader();
-    imageBase64 = await new Promise((resolve) => {
-      reader.onloadend = () => resolve(reader.result.split(',')[1]);
-      reader.readAsDataURL(imageFile);
-    });
+  if (!imageFile || !imageFile.name) {
+    formData.set("image", new Blob([], { type: "text/plain" }), "파일없음.txt");
   }
-
-  const jsonData = {
-    name: formData.get("name"),
-    phone: formData.get("phone"),
-    address: address,
-    product: formData.get("product"),
-    color: formData.get("color"),
-    serial: formData.get("serial"),
-    issue_category: formData.get("issue_category"),
-    issue_detail: formData.get("issue_detail"),
-    issue_subdetail: formData.get("issue_subdetail"),
-    issue_description: formData.get("issue_description") || "",
-    image: imageBase64,
-    filename: filename,
-    mimeType: mimeType
-  };
 
   try {
     const response = await fetch("https://luvolas.luvolcorp.workers.dev/", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(jsonData)
+      body: formData
     });
 
     document.getElementById("loading-message").style.display = "none";
-    submitBtn.disabled = false; // ✅ 응답 후 버튼 다시 활성화
+    submitBtn.disabled = false;
 
     if (response.ok) {
       alert("접수가 완료되었습니다.");
@@ -151,9 +127,8 @@ async function handleSubmit(event) {
     }
   } catch (error) {
     document.getElementById("loading-message").style.display = "none";
-    submitBtn.disabled = false; // ✅ 오류 시에도 버튼 다시 활성화
+    submitBtn.disabled = false;
     alert("접수 중 네트워크 오류가 발생했습니다.");
     console.error("fetch error:", error);
   }
 }
-
