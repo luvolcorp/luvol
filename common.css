@@ -168,6 +168,13 @@ footer a img {
   vertical-align: middle;
 }
 
+footer p {
+  color: #292513;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+
 /* 드롭다운 메뉴 숨김 기본 */
 .dropdown-menu {
   display: none;
