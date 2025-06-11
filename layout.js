@@ -45,6 +45,32 @@ li.appendChild(dropdownMenu);
 navUl.appendChild(li);
 
 
+// 모바일에서 드롭다운 메뉴 토글 기능 추가
+document.addEventListener('click', function (e) {
+const isDropdownToggle = e.target.closest('.dropdown > a');
+
+// 클릭한 것이 드롭다운 토글이면 메뉴 열기/닫기
+if (isDropdownToggle) {
+	e.preventDefault();
+	const dropdown = isDropdownToggle.parentElement;
+	const menu = dropdown.querySelector('.dropdown-menu');
+	const isOpen = menu.style.display === 'block';
+
+	// 다른 열려 있는 메뉴 닫기
+	document.querySelectorAll('.dropdown-menu').forEach(m => {
+		m.style.display = 'none';
+	});
+
+	// 현재 메뉴만 토글
+	menu.style.display = isOpen ? 'none' : 'block';
+} else {
+	// 드롭다운 외 클릭 시 모두 닫기
+	document.querySelectorAll('.dropdown-menu').forEach(m => {
+		m.style.display = 'none';
+	});
+}
+});
+
 // A/S 접수 메뉴: as.html 페이지가 아닐 때만 표시
 const path = location.pathname;
 const isAS = path.includes('as.html');
