@@ -72,26 +72,14 @@ document.getElementById('phone').addEventListener('input', function (e) {
 function execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function(data) {
-      let fullAddr = ''; // 최종 주소 변수
+      // 사용자가 선택한 주소 전체 (괄호 포함 포함됨)
+      const fullAddr = data.address;
 
-      if (data.userSelectedType === 'R') {
-        // 도로명 주소 선택 시
-        fullAddr = data.roadAddress;
-      } else {
-        // 지번 주소 선택 시
-        fullAddr = data.jibunAddress;
-      }
-
-      // 건물명 포함 시 괄호로 추가
-      if (data.buildingName !== '' && data.apartment === 'Y') {
-        fullAddr += ` (${data.buildingName})`;
-      }
-
-      // 주소 입력 필드에 전체 주소 세팅 (글자 수 제한 없음)
+      // 주소 입력 필드에 전체 주소 세팅
       const addressInput = document.getElementById("address");
       addressInput.value = fullAddr;
 
-      // 다음 입력칸 포커스 이동
+      // 상세 주소 입력칸으로 포커스 이동
       document.getElementById("address_detail").focus();
     }
   }).open();
