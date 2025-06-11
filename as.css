@@ -176,7 +176,7 @@ button:disabled {
 }
 
 /* 접수하기 버튼 스타일 */
-button {
+button[type="submit"] {
   margin-top: 1.5rem;
   width: 100%;
   padding: 1rem;
@@ -189,6 +189,14 @@ button {
   box-sizing: border-box;
 }
 
-button:hover {
+/* 호버 효과: 활성 상태일 때만 */
+button[type="submit"]:hover:enabled {
   background: #253860;
+}
+
+/* 비활성 상태일 때 색상과 커서 고정 */
+button[type="submit"]:disabled {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
