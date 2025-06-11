@@ -38,23 +38,7 @@ textarea {
   min-height: 100px;
 }
 
-/* 버튼 스타일 */
-button {
-  margin-top: 1.5rem;
-  width: 100%;
-  padding: 1rem;
-  font-size: 1rem;
-  background: #59b4b1;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  box-sizing: border-box;
-}
 
-button:hover {
-  background: #253860;
-}
 
 /* 주소 모달 스타일 */
 .modal {
@@ -99,45 +83,112 @@ button:disabled {
 .privacy-check {
   margin-top: 1.5rem;
   width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 1rem;
+	padding: 1rem;
+	background: #f9f9f9;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	box-sizing: border-box;
+	font-size: 0.9rem;
+	line-height: 1.4;
+	color: #333;
+	position: relative;
+	z-index: 1;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	transition: background-color 0.3s, box-shadow 0.3s;
+	cursor: pointer;
+
 }
 
 /* 개인정보 보호 체크 줄 정렬 개선 */
+/* 전체 행을 수평 정렬 */
 .privacy-row {
   display: flex;
-  align-items: center;
+  align-items: center;       /* 수직 가운데 정렬 */
   gap: 0.5rem;
-  margin-top: 1rem;
+  width: 100%;
 }
 
+/* 체크박스 + 텍스트 묶음 */
 .privacy-row label {
   display: flex;
   align-items: center;
-  margin: 0;
-  font-size: 0.95rem;
-  flex-grow: 1;
+	justify-content:left;
+  margin: auto;
+  font-size: 0.9rem;
+	width: 100%;
 }
 
+/* 체크박스 */
 .privacy-row input[type="checkbox"] {
+	appearance: none; /* 기본 체크박스 스타일 제거 */
+  width: 10px;
+  height: 10px;
+  border: 1px solid #aaa;
+  border-radius: 3px;
   margin-right: 0.5rem;
-  transform: scale(1.2); /* 크기 약간 키우기 */
+  position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #fff;
 }
 
+/* 체크 시 배경색 + 체크 표시 */
+.privacy-row input[type="checkbox"]:checked {
+  background-color: white; /* 원하는 체크 시 색상 */
+  border-color: #59b4b1;
+}
+
+/* 체크된 상태의 표시 (✔ 모양) */
+.privacy-row input[type="checkbox"]:checked::after {
+  content: "✔";
+  position: absolute;
+  font-size: 18px;
+	align-items: center;
+	justify-content: center;
+  color: #59b4b1; /* 체크표시 색상 */
+}
+
+/* 전문보기 */
 #view-privacy {
-  padding: 2px 4px;           /* 좌우 여백 축소 */
-  font-size: 0.7rem;          /* 글씨 크기 조금 더 작게 */
+	margin: auto;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  color: #59b4b1;
   background: transparent;
   border: 1px solid #999;
-  border-radius: 4px;
+  border-radius: 30px;
   cursor: pointer;
-  white-space: nowrap;
-  height: 28px;               /* 높이도 조금 축소 */
-  line-height: 1;
-  min-width: auto;            /* 최소 너비 제한 해제 */
+	width: 100px;
+  height: 30px;                /* 버튼 높이 고정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.warning-text {
-  font-size: 0.85rem;
-  color: red;
-  margin-top: 0.25rem;
-  margin-left: 1.5rem; /* 체크박스 왼쪽 여백만큼 들여쓰기 */
+#view-privacy:hover {
+	background: #f0f0f0; /* 호버 시 배경색 변경 */
+}
+
+/* 접수하기 버튼 스타일 */
+button {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  background: #59b4b1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+button:hover {
+  background: #253860;
 }
