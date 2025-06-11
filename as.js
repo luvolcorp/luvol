@@ -101,6 +101,18 @@ window.execDaumPostcode = execDaumPostcode;
 // 5. 접수 처리
 async function handleSubmit(event) {
   event.preventDefault();
+
+  const agreeCheckbox = document.getElementById("privacy-agree");
+  const warningText = document.getElementById("privacy-warning");
+
+  // 체크 안 했을 경우 경고 표시
+  if (!agreeCheckbox.checked) {
+    warningText.style.display = "block";
+    return;
+  } else {
+    warningText.style.display = "none";
+  }
+
   document.getElementById("loading-message").style.display = "block";
 
   const form = event.target;
@@ -140,5 +152,44 @@ async function handleSubmit(event) {
     console.error("fetch error:", error);
   }
 }
+
+// 6. 개인정보 처리방침 모달
+// 요소 정의
+const submitButton = document.querySelector("button[type='submit']");
+const agreeCheckbox = document.getElementById("privacy-agree");
+const viewPrivacyBtn = document.getElementById("view-privacy");
+const modal = document.getElementById("privacy-modal");
+const closeModal = modal.querySelector(".close");
+const warningText = document.getElementById("privacy-warning");
+
+// 초기: 체크 안 됐을 때 접수 버튼 비활성화
+submitButton.disabled = true;
+
+// ✅ 1. 체크박스 변화 감지 → 접수 버튼만 제어
+agreeCheckbox.addEventListener("change", () => {
+  const isChecked = agreeCheckbox.checked;
+  submitButton.disabled = !isChecked;
+
+  // 체크 시 경고 제거
+  if (isChecked) {
+    warningText.style.display = "none";
+  }
+});
+
+// ✅ 2. 전문보기 버튼 → 모달 제어 전용
+// 모달 열기
+viewPrivacyBtn.addEventListener("click", () => {
+  modal.style.display = "flex";
+});
+
+// 모달 닫기
+closeModal.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+// 모달 외부 클릭 시 닫기
+window.addEventListener("click", (e) => {
+  if (e.target === modal) modal.style.display = "none";
+});
 
 

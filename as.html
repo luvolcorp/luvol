@@ -25,10 +25,10 @@
       <label for="phone">휴대폰번호
         <input type="tel" id="phone" name="phone" placeholder="숫자만 입력하세요" required>
       </label>
-	<label for="address">주소</label>
-<div class="address">
-  <input type="text" id="address" name="address" readonly placeholder="도로명 주소를 검색하세요" onclick="execDaumPostcode()" required>
-</div>
+			<label for="address">주소</label>
+				<div class="address">
+					<input type="text" id="address" name="address" readonly placeholder="도로명 주소를 검색하세요" onclick="execDaumPostcode()" required>
+				</div>
 			<label for="address_detail">상세 주소
 				<input type="text" id="address_detail" name="address_detail" required>
 			</label>
@@ -77,14 +77,37 @@
       <label for="imageLink">사진 업로드 (선택)
         <input type="file" id="image" name="image" accept="image/*">
       </label>
-      <button type="submit">접수하기</button>
+			<div class="privacy-check">
+			<div class="privacy-row">
+				<label for="privacy-agree">
+					<input type="checkbox" id="privacy-agree">
+					개인정보 보호정책에 동의합니다
+				</label>
+				<button type="button" id="view-privacy">전문보기</button>
+			</div>
+			<p id="privacy-warning" class="warning-text" style="display: none;">
+				개인정보 보호정책에 동의하셔야 접수가 가능합니다.
+			</p>
+		</div>
+			<button type="submit">접수하기</button>
     </form>
 
-<!-- 접수 중 메시지 오버레이 -->
+<!-- 접수 중 메시지 모달 -->
 <div id="loading-message" class="loading-overlay" style="display: none;">
   <div class="loading-box">
     <div class="spinner"></div>
     <p>접수 등록 중입니다.<br>잠시만 기다려 주세요...</p>
+  </div>
+</div>
+
+<!-- 개인정보 처리방침 모달 -->
+<div id="privacy-modal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>개인정보 처리방침</h2>
+    <p>
+      본 A/S 접수 시 수집된 개인정보는 접수 확인, 고객 응대 및 서비스 제공을 위한 목적으로만 사용되며, 외부로 유출되지 않습니다. 접수자는 이에 동의합니다.
+    </p>
   </div>
 </div>
   </main>
