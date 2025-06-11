@@ -28,13 +28,13 @@ header {
 
 @media (max-width: 768px) {
   .logo-img {
-    width: 150px;
+    width: 150px; /* 태블릿 이하 */
   }
 }
 
 @media (max-width: 480px) {
   .logo-img {
-    width: 120px;
+    width: 120px; /* 모바일 이하 */
   }
 }
 
@@ -52,8 +52,9 @@ nav ul li {
 }
 
 nav ul li a {
-  color: white;
+  color: #59b4b1;
   text-decoration: none;
+	font-size: 1.5rem;
   font-weight: bold;
   padding: 0.5rem 1rem;
   border-radius: 5px;
@@ -62,7 +63,7 @@ nav ul li a {
 
 nav ul li a:hover {
   background-color: #59b4b1;
-  color: #222;
+  color: white;
 }
 
 /* 푸터 */
