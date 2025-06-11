@@ -23,12 +23,11 @@
         <input type="text" id="name" name="name" required>
       </label>
       <label for="phone">전화번호
-        <input type="tel" id="phone" name="phone" required>
+        <input type="tel" id="phone" name="phone" placeholder="숫자만 입력하세요" required>
       </label>
 	<label for="address">주소</label>
 <div class="address">
   <input type="text" id="address" name="address" readonly placeholder="도로명 주소를 검색하세요" onclick="execDaumPostcode()" required>
-  <!-- <button type="button" onclick="execDaumPostcode()">검색</button> -->
 </div>
 			<label for="address_detail">상세 주소
 				<input type="text" id="address_detail" name="address_detail" required>
@@ -36,11 +35,11 @@
       <label for="product">제품명
         <select id="product" name="product" required>
           <option value="">제품을 선택하세요</option>
-          <option value="RS-500">RS-500</option>
+          <!-- <option value="RS-500">RS-500</option>
           <option value="FS-500">FS-500</option>
           <option value="PS-400">PS-400</option>
           <option value="PS-300">PS-300</option>
-          <option value="DR-500">DR-500</option>
+          <option value="DR-500">DR-500</option> -->
         </select>
       </label>
 			<label for="color">색상
@@ -54,9 +53,6 @@
       <label for="issue-category">고장 증상 (1단계)
         <select id="issue-category" name="issue_category" required>
           <option value="">선택하세요</option>
-          <option value="전원 문제">전원 문제</option>
-          <option value="소리 문제">소리 문제</option>
-          <option value="블루투스 연결">블루투스 연결</option>
         </select>
       </label>
       <label for="issue-detail">고장 증상 상세 (2단계)
@@ -95,8 +91,9 @@
     <a href="https://smartstore.naver.com/luvol" target="_blank"><img src="assets/naver.png" alt="Naver Shopping"></a>
     <p>&copy; 2025 LUVOL All rights reserved.</p>
   </footer>
-	<script src="issue.js"></script>
+	<script src="product.js"></script>
 	<script src="color.js"></script>
+	<script src="issue.js"></script>
 	<script src="as.js"></script>
 </body>
 </html>

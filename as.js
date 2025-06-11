@@ -1,4 +1,4 @@
-// 페이지 로딩 후 이벤트 설정
+// 1. 페이지 로딩 후 이벤트 설정
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById('product').addEventListener('change', function () {
     const model = this.value;
@@ -47,8 +47,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 폼 제출 이벤트 연결
+  // 2. 폼 제출 이벤트 연결
   document.querySelector("form").addEventListener("submit", handleSubmit);
+});
+
+// 3. 전화번호 하이픈 생성 3/4/4 형식
+document.getElementById('phone').addEventListener('input', function (e) {
+  let value = e.target.value.replace(/\D/g, ''); // 숫자만 남기기
+
+  // 최대 11자리까지만 입력 허용
+  if (value.length > 11) value = value.slice(0, 11);
+
+  // 3-4-4 하이픈 형식 적용
+  if (value.length >= 8) {
+    e.target.value = value.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
+  } else if (value.length >= 4) {
+    e.target.value = value.replace(/(\d{3})(\d{0,4})/, "$1-$2");
+  } else {
+    e.target.value = value;
+  }
 });
 
 // 4. 주소 검색 API
@@ -58,16 +75,23 @@ function execDaumPostcode() {
       let fullAddr = ''; // 최종 주소 변수
 
       if (data.userSelectedType === 'R') {
+        // 도로명 주소 선택 시
         fullAddr = data.roadAddress;
       } else {
+        // 지번 주소 선택 시
         fullAddr = data.jibunAddress;
       }
 
+      // 건물명 포함 시 괄호로 추가
       if (data.buildingName !== '' && data.apartment === 'Y') {
         fullAddr += ` (${data.buildingName})`;
       }
 
-      document.getElementById("address").value = fullAddr;
+      // 주소 입력 필드에 전체 주소 세팅 (글자 수 제한 없음)
+      const addressInput = document.getElementById("address");
+      addressInput.value = fullAddr;
+
+      // 다음 입력칸 포커스 이동
       document.getElementById("address_detail").focus();
     }
   }).open();
@@ -103,11 +127,12 @@ async function handleSubmit(event) {
     submitBtn.disabled = false;
 
     if (response.ok) {
-      alert("접수가 완료되었습니다.");
+      // alert("접수가 완료되었습니다.");
       form.reset();
+			window.location.href = "thanks.html";  // 성공 시 이동
     } else {
-      alert("서버 오류가 발생했습니다. 다시 시도해 주세요.");
-    }
+      alert("접수 중 오류가 발생했습니다. 다시 시도해 주세요.");
+		}
   } catch (error) {
     document.getElementById("loading-message").style.display = "none";
     submitBtn.disabled = false;
@@ -116,22 +141,4 @@ async function handleSubmit(event) {
   }
 }
 
-// 6. 전화번호 하이픈 생성
-document.getElementById('phone').addEventListener('input', function (e) {
-  let value = e.target.value.replace(/\D/g, ''); // 숫자만 남기기
 
-  if (value.startsWith("010")) {
-    if (value.length > 11) value = value.slice(0, 11);
-
-    if (value.length >= 8) {
-      e.target.value = value.replace(/(\d{3})(\d{4})(\d{0,4})/, "$1-$2-$3");
-    } else if (value.length >= 4) {
-      e.target.value = value.replace(/(\d{3})(\d{0,4})/, "$1-$2");
-    } else {
-      e.target.value = value;
-    }
-  } else {
-    // 010 이외 입력 제한
-    e.target.value = value.slice(0, 11);
-  }
-});
