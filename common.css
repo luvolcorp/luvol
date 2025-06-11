@@ -14,23 +14,6 @@ header {
   text-align: center;
 }
 
-.hero {
-  text-align: center;
-  padding: 4rem 1rem;
-  background: #eee;
-}
-
-.hero h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.hero p {
-  font-size: 1.2rem;
-  color: #555;
-}
-
-
 .logo {
   text-align: center;
   margin-top: 1rem;
@@ -54,6 +37,25 @@ header {
     width: 120px; /* 모바일 이하 */
   }
 }
+
+.hero {
+  text-align: center;
+  padding: 4rem 1rem;
+  background: #eee;
+}
+
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+
+
 
 /* 상단 메뉴 */
 nav ul {
@@ -83,18 +85,6 @@ nav ul li a:hover {
   color: white;
 }
 
-/* 푸터 */
-footer {
-  text-align: center;
-  padding: 1rem;
-  color: #999;
-}
-
-footer a img {
-  width: 30px;
-  margin: 0 0.5rem;
-  vertical-align: middle;
-}
 
 /* 로딩 오버레이 */
 .loading-overlay {
@@ -133,4 +123,17 @@ footer a img {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* 푸터 */
+footer {
+  text-align: center;
+  padding: 1rem;
+  color: #999;
+}
+
+footer a img {
+  width: 30px;
+  margin: 0 0.5rem;
+  vertical-align: middle;
 }
