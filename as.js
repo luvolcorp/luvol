@@ -1,5 +1,5 @@
-// 1. 페이지 로딩 후 이벤트 설정
 document.addEventListener("DOMContentLoaded", () => {
+  // 1. 제품 색상 선택
   document.getElementById('product').addEventListener('change', function () {
     const model = this.value;
     const colorSelect = document.getElementById('color');
@@ -14,45 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // document.getElementById('issue-category').addEventListener('change', function () {
-  //   const category = this.value;
-  //   const detailSelect = document.getElementById('issue-detail');
-  //   const subdetailSelect = document.getElementById('issue-subdetail');
-  //   detailSelect.innerHTML = '<option value="">먼저 1단계를 선택하세요</option>';
-  //   subdetailSelect.innerHTML = '<option value="">먼저 2단계를 선택하세요</option>';
-
-  //   if (issueMap[category]) {
-  //     Object.keys(issueMap[category]).forEach(detail => {
-  //       const opt = document.createElement('option');
-  //       opt.value = detail;
-  //       opt.textContent = detail;
-  //       detailSelect.appendChild(opt);
-  //     });
-  //   }
-  // });
-
-  // document.getElementById('issue-detail').addEventListener('change', function () {
-  //   const category = document.getElementById('issue-category').value;
-  //   const detail = this.value;
-  //   const subdetailSelect = document.getElementById('issue-subdetail');
-  //   subdetailSelect.innerHTML = '<option value="">먼저 2단계를 선택하세요</option>';
-
-  //   if (issueMap[category] && issueMap[category][detail]) {
-  //     issueMap[category][detail].forEach(item => {
-  //       const opt = document.createElement('option');
-  //       opt.value = item;
-  //       opt.textContent = item;
-  //       subdetailSelect.appendChild(opt);
-  //     });
-  //   }
-  // });
-
-document.addEventListener('DOMContentLoaded', () => {
+  // 2. 고장 증상 드롭다운 처리
   const category = document.getElementById('issue_category');
   const detail = document.getElementById('issue_detail');
   const subdetail = document.getElementById('issue_subdetail');
 
-  // 1단계 드롭다운 채우기
+  // 1단계 초기화
+  category.innerHTML = '<option value="" disabled selected hidden>선택하세요</option>';
   Object.keys(issueMap).forEach(step1 => {
     const opt = document.createElement('option');
     opt.value = step1;
@@ -60,11 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
     category.appendChild(opt);
   });
 
-  // 1단계 선택 시 → 2단계 목록 채우기
+  // 1단계 선택 시 → 2단계 초기화 및 표시
   category.addEventListener('change', () => {
+    console.log("1단계 선택:", category.value);
     const selected = category.value;
-    detail.innerHTML = '<option value="">선택하세요</option>';
-    subdetail.innerHTML = '<option value="">선택하세요</option>';
+    detail.innerHTML = '<option value="" disabled selected hidden>선택하세요</option>';
+    subdetail.innerHTML = '<option value="" disabled selected hidden>선택하세요</option>';
 
     if (issueMap[selected]) {
       Object.keys(issueMap[selected]).forEach(step2 => {
@@ -76,29 +45,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 2단계 선택 시 → 3단계 목록 채우기
+  // 2단계 선택 시 → 3단계 표시
   detail.addEventListener('change', () => {
     const step1 = category.value;
     const step2 = detail.value;
-    subdetail.innerHTML = '<option value="">선택하세요</option>';
+    subdetail.innerHTML = '<option value="" disabled selected hidden>선택하세요</option>';
 
     if (issueMap[step1] && issueMap[step1][step2]) {
       issueMap[step1][step2].forEach(step3 => {
         const opt = document.createElement('option');
-        opt.value = step3; // ✅ value와 textContent 모두 동일
+        opt.value = step3;
         opt.textContent = step3;
         subdetail.appendChild(opt);
       });
     }
   });
-});
 
-
-
-
-  // 2. 폼 제출 이벤트 연결
+  // 3. 폼 제출 이벤트 연결
   document.querySelector("form").addEventListener("submit", handleSubmit);
 });
+
 
 // 3. 전화번호 하이픈 생성 3/4/4 형식
 document.getElementById('phone').addEventListener('input', function (e) {
