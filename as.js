@@ -48,9 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // });
 
 document.addEventListener('DOMContentLoaded', () => {
-  const category = document.getElementById('issue-category');
-  const detail = document.getElementById('issue-detail');
-  const subdetail = document.getElementById('issue-subdetail');
+  const category = document.getElementById('issue_category');
+  const detail = document.getElementById('issue_detail');
+  const subdetail = document.getElementById('issue_subdetail');
 
   // 1단계 드롭다운 채우기
   Object.keys(issueMap).forEach(step1 => {
@@ -92,6 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+
 
   // 2. 폼 제출 이벤트 연결
   document.querySelector("form").addEventListener("submit", handleSubmit);
@@ -225,3 +228,6 @@ window.addEventListener("click", (e) => {
 });
 
 
+category.addEventListener('change', () => {
+  console.log("1단계 선택:", category.value);
+});
