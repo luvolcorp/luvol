@@ -30,6 +30,7 @@ dropdownMenu.classList.add('dropdown-menu');
 const subItems = [
   { name: 'iOS', href: 'https://apps.apple.com/us/app/luvol-ps-300/id6740847686', target: '_blank' },
   { name: 'Android', href: 'https://play.google.com/store/apps/details?id=com.dynatone.app.blepiano&hl=ko&pli=1', target: '_blank' },
+	{ name: 'App Manual', href: 'https://docs.google.com/document/d/1AtAqDRWO__xG9rxMAx0T5E6209vjfiPqUIkd0xrJLO0', target: '_blank' },
 ];
 
 subItems.forEach(item => {
