@@ -1,4 +1,4 @@
-/* 기본 폰트 및 레이아웃 */
+/* 기본 폰트 및 전체 배경 설정 */
 body {
   font-family: 'Noto Sans KR', sans-serif;
   background: url('https://luvol.speedgabia.com/kr/img/250403_0113-a1.jpg') no-repeat center center fixed;
@@ -6,22 +6,25 @@ body {
   margin: 0;
   padding: 0;
   color: #000;
-  /* 투명도 조절을 위한 오버레이 */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   position: relative;
 }
+
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(255,255,255,0.6); /* 투명도 조절: 0.6은 60% 불투명 */
+  background: rgba(255,255,255,0.6); /* 배경 오버레이 */
   z-index: 0;
   pointer-events: none;
 }
 
-/* 본문, 헤더 등 내용이 배경 위에 보이도록 z-index */
+/* 헤더, 메인, 푸터는 배경 위로 보이도록 설정 */
 header, main, footer {
   position: relative;
-  z-index: 1;
+  z-index: auto;
 }
 
 /* 반응형 배경 이미지 */
@@ -37,6 +40,7 @@ header, main, footer {
   }
 }
 
+/* 헤더 */
 header {
   background: #0c0103;
   color: #fff;
@@ -44,87 +48,96 @@ header {
   text-align: center;
 }
 
-/* 로고 이미지 반응형 설정 */
+/* 로고 이미지 반응형 */
 .logo {
   text-align: center;
   margin-top: 1rem;
 }
-
 .logo-img {
   max-width: 100%;
   height: auto;
-  width: 300px; /* 기본값 */
+  width: 300px;
 }
-
 @media (max-width: 768px) {
   .logo-img {
-    width: 150px; /* 태블릿 이하 */
+    width: 150px;
   }
 }
-
 @media (max-width: 480px) {
   .logo-img {
-    width: 120px; /* 모바일 이하 */
+    width: 120px;
   }
 }
 
+/* 메뉴 */
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0;
+  margin-top: 1rem;
+}
+nav ul li {
+  margin: 0 1rem;
+}
+nav ul li a {
+  color: #59b4b1;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+nav ul li a:hover {
+  background-color: #59b4b1;
+  color: white;
+}
 
-/* 상위 메뉴 relative 위치 설정 */
+/* 드롭다운 메뉴 공통 */
 .dropdown {
   position: relative;
+  z-index: 9999; /* 가장 위로 */
 }
-
-/* 상위 메뉴 hover 시 드롭다운 표시 */
-.dropdown:hover .dropdown-menu {
-  display: block;
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  list-style: none;
+  z-index: 9999 !important;/* 가장 위로 */
+  min-width: 120px;
 }
-
-/* 드롭다운 항목 스타일 */
 .dropdown-menu li {
   padding: 0;
 }
-
 .dropdown-menu li a {
   display: block;
   padding: 0.5rem 1rem;
   color: #333;
   text-decoration: none;
-	font-size: 1rem;
+  font-size: 1rem;
 }
-
 .dropdown-menu li a:hover {
   background-color: #f0f0f0;
-	color: #59b4b1;
+  color: #59b4b1;
 }
 
+/* 데스크탑: hover 시 드롭다운 표시 */
 @media (min-width: 769px) {
   .dropdown:hover .dropdown-menu {
     display: block;
   }
 }
 
-/* 모바일 대응 - .dropdown-menu는 기본적으로 hidden (JS로 제어) */
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 0.5rem 0;
-  margin-top: 0.5rem;
-  list-style: none;
-  z-index: 1000;
-  min-width: 120px;
-}
-
-/* 모바일에서 터치 시 제대로 표시되도록 위치 보완 */
+/* 모바일 대응: JS에서 클릭으로 표시 */
 @media (max-width: 768px) {
-  .dropdown {
-    position: relative;
-  }
-
   .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -132,90 +145,40 @@ header {
     width: max-content;
     min-width: 120px;
   }
-
-  nav ul {
-    flex-wrap: wrap;
-  }
 }
 
+/* 본문 콘텐츠 영역 */
+main {
+  flex: 1;
+}
 
-/* 본문 내용 */
 .vibe {
   text-align: center;
   padding: 4rem 1rem;
 }
-
 .vibe h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
-
 .vibe p {
   font-size: 1.2rem;
   color: #555;
 }
 
-
-/* 상단 메뉴 */
-nav ul {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  padding: 0;
-  margin-top: 1rem;
-}
-
-nav ul li {
-  margin: 0 1rem;
-}
-
-nav ul li a {
-  color: #59b4b1;
-  text-decoration: none;
-	font-size: 1.3rem;
-  font-weight: bold;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-nav ul li a:hover {
-  background-color: #59b4b1;
-  color: white;
-}
-
-/* 푸터 */
+/* 푸터: 항상 화면 하단 고정 */
 footer {
   text-align: center;
   padding: 1rem;
-  color: #d7dee2;
-	background:#D7dee2; /* 어두운 반투명 배경 */
-	margin-top: auto;
-
+  background: #d7dee2;
+  color: #292513;
+  margin-top: auto;
 }
-
 footer a img {
   width: 30px;
   margin: 0 0.5rem;
   vertical-align: middle;
 }
-
 footer p {
-  color: #292513;
   margin-top: 0.5rem;
   font-size: 0.9rem;
-}
-
-
-/* 드롭다운 메뉴 숨김 기본 */
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 0.5rem 0;
-  margin-top: 0.5rem;
-  list-style: none;
-  z-index: 1000;
-  min-width: 120px;
 }
