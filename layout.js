@@ -16,11 +16,11 @@ fetch('layout.html')
 
     // PRODUCTS 메뉴 구성
     const productItems = [
-      { name: 'RS-500', href: 'https://smartstore.naver.com/luvol/products/11923612272', target: '_blank' },
-      { name: 'FS-500', href: 'https://smartstore.naver.com/luvol/products/11922764271', target: '_blank' },
-      { name: 'PS-400', href: 'https://smartstore.naver.com/luvol/products/11923568558', target: '_blank' },
-      { name: 'PS-300', href: 'https://smartstore.naver.com/luvol/products/11923586592', target: '_blank' },
-      // { name: 'DR-500 (Coming Soon)', href: '', target: '_blank' },
+      { name: 'RS-500', href: 'https://smartstore.naver.com/luvol_official/products/12403782608', target: '_blank' },
+      { name: 'FS-500', href: 'https://smartstore.naver.com/luvol_official/products/12404087273', target: '_blank' },
+      { name: 'PS-400', href: 'https://smartstore.naver.com/luvol_official/products/12404024344', target: '_blank' },
+      { name: 'PS-300', href: 'https://smartstore.naver.com/luvol_official/products/12403965407', target: '_blank' },
+      { name: 'DR-500', href: 'https://smartstore.naver.com/luvol_official/products/12448819755', target: '_blank' },
     ];
 
     const productsLi = createDropdownMenu('PRODUCTS', productItems);
